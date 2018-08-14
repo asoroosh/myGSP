@@ -1,5 +1,8 @@
 function [W] = GuassKernel(Dist,theta,k)
-
+%
+%
+% SA, Uni of Oxford, 2018
+%
 if nargin==1; theta = 0.1; k = 0.1; end
 
 Dist = double(Dist);
