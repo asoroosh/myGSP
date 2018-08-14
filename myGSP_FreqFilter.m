@@ -1,4 +1,8 @@
 function Xf = myGSP_FreqFilter(A,X,H)
+%
+%
+% SA, Uni of Oxford, 2018
+%
 
 N = size(A,1);
 

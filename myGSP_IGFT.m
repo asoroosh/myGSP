@@ -1,4 +1,8 @@
 function X = myGSP_IGFT(A,Xhat)
+%
+%
+% SA, Uni of Oxford, 2018
+%
 
 N = size(A,1);
 

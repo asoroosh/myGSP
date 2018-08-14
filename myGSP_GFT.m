@@ -1,4 +1,4 @@
-function [Xhat,V0,U0,L,ZC] = myGSP_GFT(A,X)
+function [Xhat,V0,U0,ZC] = myGSP_GFT(L,X)
 % [Xhat,V0,U0,L,ZC] = myGSP_GFT(A,X)
 % 
 %%INPUT:
@@ -11,12 +11,16 @@ function [Xhat,V0,U0,L,ZC] = myGSP_GFT(A,X)
 % U0 : eig values
 % L  : Laplacian Mat
 % ZC : Zero-crossings
+%
+%
+% SA, Uni of Oxford, 2018
+%
 
-N = size(A,1);
+N = size(L,1);
 
-if size(A,1)~=size(A,2); error('A is not square! What are you on about?'); end; 
+if size(L,1)~=size(L,2); error('A is not square! What are you on about?'); end; 
 
-L = myGSP_LapMat(A);
+% L = myGSP_LapMat(A);
 
 %[V0,U0] = eig(L); %can be changed to SVD
 [V0,U0] = svd(L);
