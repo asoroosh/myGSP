@@ -24,7 +24,7 @@ prefix = 'BlockDesign_VertexFiltering';
 LowPassCutOff = 100; %meaning after from 500 to end is set to zero on the transfer function 
 
 % Signal:
-load('SimfMRIts/BlockDesign_400_20stim_TR2.mat','ts')
+load('/Users/sorooshafyouni/Home/GSP/SimfMRIts/BlockDesign_400_20stim_TR2.mat','ts')
 %ts = ts+10;
 %ts = ts./max(ts);
 

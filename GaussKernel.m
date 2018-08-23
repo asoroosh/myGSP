@@ -1,4 +1,4 @@
-function [W] = GuassKernel(Dist,theta,k)
+function [W] = GaussKernel(Dist,theta,k)
 %
 %
 % SA, Uni of Oxford, 2018

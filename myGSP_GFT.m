@@ -2,11 +2,11 @@ function [Xhat,V0,U0,ZC] = myGSP_GFT(L,X)
 % [Xhat,V0,U0,L,ZC] = myGSP_GFT(A,X)
 % 
 %%INPUT:
-% A : adjacency matrix
+% L : Either the adjacency matrix (A) or the Laplacian matrix (L)
 % X : signal on vertices (optional)
 %
 %%OUTPUT:
-% Xhat : fourier transformed signal (if X is not fed, then it is gonna be empty)
+% Xhat : Graph Fourier transformed signal (if X is not fed, then it is gonna be empty)
 % V0 : eig vectors
 % U0 : eig values
 % L  : Laplacian Mat
@@ -27,7 +27,7 @@ if size(L,1)~=size(L,2); error('A is not square! What are you on about?'); end;
 
 U0 = diag(U0);
 [U0,idx] = sort(U0,'ascend');
-V0=V0(:,idx);
+V0 = V0(:,idx);
 
 signs = sign(V0(1,:));
 signs(signs==0) = 1;
