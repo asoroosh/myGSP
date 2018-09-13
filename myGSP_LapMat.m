@@ -23,4 +23,6 @@ if sum(strcmpi(varargin,'normalise'))
 else
     L  = diag(D)-A; 
 end
+
+end
     
