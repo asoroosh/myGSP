@@ -1,0 +1,2 @@
+.R.white_MSMAll.32k_fs_LR.surf.gii
+.L.white_MSMAll.32k_fs_LR.surf.gii
