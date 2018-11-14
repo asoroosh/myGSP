@@ -42,8 +42,8 @@ mkdir -p ${Where2}
 #___________________________________Download form S3 Bucket_______________________________________
 #_________________________________________________________________________________________________
 
-AWS_ACCESS_KEY="XX"
-AWS_SECRET_KEY="XX"
+AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID
+AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
 
 function s3get {
         #helper functions_________________________________________________
