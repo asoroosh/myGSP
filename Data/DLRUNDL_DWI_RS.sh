@@ -3,9 +3,9 @@
 #$ -V
 #$ -o $HOME/DWI/logs/ -e $HOME/DWI/logs/ 
 #$ -N HCP100UR_DLDL
-#$ -q long.qc
+#$ -q himem.qh
 #$ -r y
-#$ -t 1-1
+#$ -t 1-100
 
 source ~/.bashrc
 
@@ -116,7 +116,7 @@ echo "DWI download..."
 #================= DWI Download
 
 while read -u10 readfsaveragefilename; do
-	echo "Downloading ${readfsaveragefilename}"
+	echo "Downloading ${SubID}.${readfsaveragefilename}"
 	${SendMeToHeadNode} ${s3get} \
 	${AWS_HCP_BUCKET}/HCP_1200/${SubID}/T1w/fsaverage_LR32k/${SubID}${readfsaveragefilename} \
 	${Where2}/fsaverage_LR32k/${SubID}${readfsaveragefilename}
@@ -141,12 +141,14 @@ $wb_command -gifti-all-labels-to-rois ${Where2}/fsaverage_LR32k/LEFT.label.gii 1
 $wb_command -gifti-all-labels-to-rois ${Where2}/fsaverage_LR32k/RIGHT.label.gii 1 ${Where2}/fsaverage_LR32k/RIGHT.func.gii
 
 for i in `seq 1 180`; do
+	echo "================Right ROI: ${i}"
         $wb_command -metric-merge ${Where2}/fsaverage_LR32k/ROIs/right-roi-${i}.func.gii -metric ${Where2}/fsaverage_LR32k/RIGHT.func.gii -column ${i}
         surf2surf -i ${Where2}/fsaverage_LR32k/${SubID}.R.white_MSMAll.32k_fs_LR.surf.gii -o ${Where2}/fsaverage_LR32k/ROIs_gii/right-roi-${i}.gii --values=${Where2}/fsaverage_LR32k/ROIs/right-roi-${i}.func.gii
         echo ${Where2}/fsaverage_LR32k/ROIs_gii/right-roi-${i}.gii >> ${Where2}/fsaverage_LR32k/seeds.txt
 done
 
 for i in `seq 1 180`; do
+	echo "================Left ROI: ${i}"
         $wb_command -metric-merge ${Where2}/fsaverage_LR32k/ROIs/left-roi-${i}.func.gii  -metric ${Where2}/fsaverage_LR32k/LEFT.func.gii -column ${i}
         surf2surf -i ${Where2}/fsaverage_LR32k/${SubID}.L.white_MSMAll.32k_fs_LR.surf.gii -o ${Where2}/fsaverage_LR32k/ROIs_gii/left-roi-${i}.gii --values=${Where2}/fsaverage_LR32k/ROIs/left-roi-${i}.func.gii
 	echo ${Where2}/fsaverage_LR32k/ROIs_gii/left-roi-${i}.gii  >> ${Where2}/fsaverage_LR32k/seeds.txt
