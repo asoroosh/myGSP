@@ -2,10 +2,10 @@
 #$ -cwd
 #$ -V
 #$ -o $HOME/DWI/logs/ -e $HOME/DWI/logs/ 
-#$ -N HCPUR_DLDL_YEO
+#$ -N HCPUR_DLDL_MMP
 #$ -q himem.qh
 #$ -r y
-#$ -t 1-1
+#$ -t 1-100
 
 source ~/.bashrc
 
@@ -25,9 +25,9 @@ echo "Initialising the stuff..."
 SubID=$(sed "${SGE_TASK_ID}q;d" ${HOME}/bin/HCP100UR/HCP_100UR.txt)
 echo "Sub: ${SubID}"
 
-AtlasID=Yeo
+AtlasID=MMP
 AtlasDir="${HOME}/bin/Atlas/${AtlasID}"
-AtlasFileName="RSN-networks.32k_fs_LR.dlabel.nii"
+AtlasFileName="Q1-Q6_RelatedParcellation210.CorticalAreas_dil_Final_Final_Areas_Group_Colors.32k_fs_LR.dlabel.nii"
 
 AWS_HCP_BUCKET=hcp-openaccess
 Where2=${PSTRG}/${SubID}
