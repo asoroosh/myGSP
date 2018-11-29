@@ -23,12 +23,12 @@ for itr = 1:1
     
     Xclean = []; 
     for i = 1:nM-1
-        %RndSign = ((rand>0.5)*2-1);
+        RndSign = ((rand>0.5)*2-1);
         Xclean = [Xclean;ones(sM,1).*i.*RndSign];
     end
 
-    LastBlock = randi(5,[sM,1]).*((rand(sM,1)>0.5)*2-1); %high frequency
-    %LastBlock = ones(sM,1).*(i+1).*RndSign; %low frequency
+    %LastBlock = randi(5,[sM,1]).*((rand(sM,1)>0.5)*2-1); %high frequency
+    LastBlock = ones(sM,1).*(i+1).*RndSign; %low frequency
     Xclean = [Xclean;LastBlock];
     
 %     %the last block

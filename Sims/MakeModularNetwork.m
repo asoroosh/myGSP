@@ -33,6 +33,8 @@ switch NetMode
             jj = connectornode(i+1);
             M(ii,jj) = 1;
         end
+    case 'Isolated'
+        return;
     otherwise
-            error('choose either Circular or RichClub')
+            error('choose either Circular, RichClub or Isolated')
 end
