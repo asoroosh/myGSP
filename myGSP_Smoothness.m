@@ -13,7 +13,8 @@ function [Xhat] = myGSP_Smoothness(L,X)
 % ZC : Zero-crossings
 %
 %
-% SA, Uni of Oxford, 2018
+% Soroosh Afyouni, University of Oxford, 2018
+% srafyouni@gmail.com
 %
 
 N = size(L,1);

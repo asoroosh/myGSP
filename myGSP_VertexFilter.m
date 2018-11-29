@@ -1,7 +1,20 @@
 function Xf = myGSP_VertexFilter(L,X,H,mode)
 %
+%%% INPUTS:
+%   L: Laplacian matrix
+%   X: Signal, if empty then the signal is assumed to be weighted degrees
+%      of each node
+%   H: Transfer function. That is an identity matrix with targetted freqs 
+%      set to zero.
+%   mode [optional]: if 'piecewise' is used, then the oprations (GFT and 
+%                    filtering is done on each time point.) 
 %
-% SA, Uni of Oxford, 2018
+%%% OUTPUTS:
+%   Xf: filtered signals
+%
+%
+% Soroosh Afyouni, University of Oxford, 2018
+% srafyouni@gmail.com
 %
 N = size(L,1);
 
