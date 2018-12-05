@@ -1,6 +1,8 @@
 
 clear
 
+addpath(genpath('/Users/sorooshafyouni/Home/GSP/myGSP'))
+
 N = 100; 
 nM = 4;
 sM = N./nM;
@@ -22,14 +24,17 @@ for itr = 1:1
     M = M.*abs(rand(N)); %put positive weights 
     
     Xclean = []; 
-    for i = 1:nM-1
-        RndSign = ((rand>0.5)*2-1);
+    for i = 1:nM
+        %RndSign = ((rand>0.5)*2-1);
         Xclean = [Xclean;ones(sM,1).*i.*RndSign];
     end
 
+    
+%%% Add the last block    
     %LastBlock = randi(5,[sM,1]).*((rand(sM,1)>0.5)*2-1); %high frequency
-    LastBlock = ones(sM,1).*(i+1).*RndSign; %low frequency
-    Xclean = [Xclean;LastBlock];
+    %LastBlock = ones(sM,1).*(i+1).*RndSign; %low frequency
+    
+    %Xclean = [Xclean;LastBlock];
     
 %     %the last block
 %     RndSign = ((rand(sM)>0.5)*2-1);
@@ -43,7 +48,7 @@ for itr = 1:1
     myGSP_plot3D(M,X)
     
     %== Unfiltered
-    L = myGSP_LapMat(M);
+    L = myGSP_LapMat(M,'normalise');
     Xh(itr) = myGSP_Smoothness(L,X);
     
     %== LP filtered

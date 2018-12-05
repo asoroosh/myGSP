@@ -1,32 +1,38 @@
 function X = myGSP_IGFT(L,Xhat,varargin)
+%X = myGSP_IGFT(L,Xhat,varargin)
+%
+%%INPUT:
 % L : Laplacian matrix, or the adjacency matrix 
 % Xhat : signal in freq domain (\hat{x})
 %
-% SA, Uni of Oxford, 2018
+%%OUTPUT:
+% X: signal in time domain
+%
+% Soroosh Afyouni, Uni of Oxford, 2018
 %
 
-N = size(L,1);
-if size(Xhat,1)~=N; error('X is not in the right format, perhaps transpose?'); end;
-if size(L,1)~=size(L,2); error('A is not square! What are you on about?'); end; 
+% gsp_igft.m
 
-T = size(Xhat,2);
+%% Read the time series 
+if size(Xhat,1) == L.N
+    T = size(Xhat,2);
+elseif size(Xhat,2) == L.N
+    T = size(Xhat,1); 
+else
+    error('length of the graph signal is wrong!')
+end
+Xhat = reshape(Xhat,[L.N,T]);
 
-[V0,U0] = svd(L); %can be changed to SVD
-U0 = diag(U0);
-
-[U0,idx] = sort(U0,'ascend');
-V0 = V0(:, idx); 
-
-signs = sign(V0(1,:));
-signs(signs==0) = 1;
-V0 = V0*diag(signs);
-
+%% Do the job
 if sum(strcmpi(varargin,'piecewise'))
     for i = 1:T
-        X(:,i) = V0*Xhat(:,i); %GFT
+        X(:,i) = L.V*Xhat(:,i); %GFT
     end
 else
-    X = V0*Xhat; % inverse GFT
+    X = L.V*Xhat; % inverse GFT: Eq 4; x=V\hat{x} % inverse GFT
 end
+
+% follow notations in Graph Frequency Analysis of Brain Signals, 
+% Huang et al, 2016
 
 end

@@ -12,35 +12,38 @@ function Xf = myGSP_VertexFilter(L,X,H,mode)
 %%% OUTPUTS:
 %   Xf: filtered signals
 %
-%
 % Soroosh Afyouni, University of Oxford, 2018
 % srafyouni@gmail.com
 %
-N = size(L,1);
 
-if ~exist(mode,'var') 
-    mode = ''; 
-end; 
+% See gsp_filter_analysis.m of gspbox
+%
+%
 
-if isempty(X)
-    disp('Signal hasnt been set, so we set it to strength of nodes.')
-    X = sum(L)';
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if nargin<4; mode = ''; end;
+
+%% Read the time series 
+if size(X,1) == L.N
+    T = size(X,2);
+elseif size(X,2) == L.N
+    T = size(X,1); 
 else
-    if size(X,1)~=N 
-        error('X is not in the right format, perhaps transpose?'); 
-    end
+    error('length of the graph signal is wrong!')
 end
+X = reshape(X,[L.N,T]);
 
-if size(L,1)~=size(L,2) 
-    error('A is not square! What are you on about?'); 
-end 
-
-
+%% Do the job!
 % transform to the freq domain
 Xhat = myGSP_GFT(L,X,mode);
 
 % filter out in graph signal domain
-Xfhat = H*Xhat;
+Xfhat = conj(H(L.U)).*Xhat;
 
 % and, transform back to the vertex domain
 Xf = myGSP_IGFT(L,Xfhat,mode);
+
+% follow notations in Graph Frequency Analysis of Brain Signals, 
+% Huang et al, 2016
+
+end
