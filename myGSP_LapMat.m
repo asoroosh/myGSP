@@ -50,6 +50,7 @@ V0 = V0(:,idx);
 % signs(signs==0) = 1;
 % V0 = V0*diag(signs);
 
+L.W = A;
 L.N = N;
 L.L = LM; %Laplacian Matrix
 L.U = U0; %eigenvalues **THIS SHOULD BE COLUMN!**

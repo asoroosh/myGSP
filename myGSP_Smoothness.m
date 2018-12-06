@@ -14,6 +14,13 @@ function [TV] = myGSP_Smoothness(L,X)
 % srafyouni@gmail.com
 %
 
+% for sanity check:
+% for i = 1:100; for j=1:100; 
+% Grad(i,j) = A(i,j).*(X(i)-X(j)).^2; 
+% end; end;
+% (sum(Grad(:)))./2
+% this should result in an identical number as TV
+
 %% Read the time series 
 if size(X,1) == L.N
     T = size(X,2);

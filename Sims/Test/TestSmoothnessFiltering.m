@@ -9,7 +9,7 @@ sM = N./nM;
 
 %A = MakeModularNetwork(N,nM,0.1,'RichClub');
 
-%Remove everything BUT the last 20 components:
+%Remove everything BUT the last CutOff components:
 CutOff = 5; 
 lpH = @(x) x.*[ones(CutOff,1);zeros(numel(x)-CutOff,1)];
 bpH = @(x) x.*[zeros(CutOff,1);ones(numel(x)-2.*CutOff,1);zeros(CutOff,1)];
