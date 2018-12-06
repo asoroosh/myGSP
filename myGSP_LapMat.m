@@ -30,10 +30,10 @@ end
 % gsp_compute_fourier_basis.m
 [V0,U0] = svd((LM+LM')/2);
 
-disp('--')
-size(V0)
-size(U0)
-disp('--')
+% disp('--')
+% size(V0)
+% size(U0)
+% disp('--')
 
 % V0: eigenvectors 
 % U0: eigenvalues
@@ -42,13 +42,13 @@ U0 = diag(U0);
 [U0,idx] = sort(U0,'ascend');
 V0 = V0(:,idx);
 
-disp('--')
-size(idx)
-disp('--')
+% disp('--')
+% size(idx)
+% disp('--')
 
-signs = sign(V0(1,:));
-signs(signs==0) = 1;
-V0 = V0*diag(signs);
+% signs = sign(V0(1,:));
+% signs(signs==0) = 1;
+% V0 = V0*diag(signs);
 
 L.N = N;
 L.L = LM; %Laplacian Matrix
