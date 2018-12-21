@@ -46,9 +46,9 @@ V0 = V0(:,idx);
 % size(idx)
 % disp('--')
 
-% signs = sign(V0(1,:));
-% signs(signs==0) = 1;
-% V0 = V0*diag(signs);
+signs = sign(V0(1,:));
+signs(signs==0) = 1;
+V0 = V0*diag(signs);
 
 L.W = A;
 L.N = N;
