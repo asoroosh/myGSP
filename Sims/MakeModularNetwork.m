@@ -23,7 +23,8 @@ switch NetMode
     case 'RichClub'
         for i = connectornode'
             for j = connectornode'
-               M(i,j) = 1; 
+               M(i,j) = 1;
+               M(j,i) = 1;
             end
         end
     case 'Circular'
@@ -32,6 +33,7 @@ switch NetMode
             ii = connectornode(i); 
             jj = connectornode(i+1);
             M(ii,jj) = 1;
+            M(jj,ii) = 1;
         end
     case 'Isolated'
         return;
