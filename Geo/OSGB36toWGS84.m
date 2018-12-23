@@ -9,11 +9,21 @@ function [WGSLat, WGSLon] = OSGB36toWGS84(easting,northing)
 % srafyouni@gmail.com 
 %
 
-[OSGBlat,OSGBlon] = to_OSGB36(easting, northing);
-[WGSLat, WGSLon]  = to_WGS84(OSGBlat,OSGBlon);
+[OSGBLat,OSGBLon] = to_OSGB36(easting, northing);
+[WGSLat, WGSLon]  = to_WGS84(OSGBLat,OSGBLon);
+
 end
 
-  function [OSGBlat,OSGBlon] = to_OSGB36(easting, northing)
+% hmmm, Matlab has all of these, but just in case...
+function RAD = deg_to_rad(degrees); RAD = degrees / 180.0 * pi; end
+function DGR = rad_to_deg(r); DGR = (r/pi)*180; end
+function S = sin_pow_2(x); S = sin(x) * sin(x); end
+function C = cos_pow_2(x); C = cos(x) * cos(x); end
+function T = tan_pow_2(x); T = tan(x) * tan(x); end
+% Matlab has a Secant function!
+%function SC = sec(x); SC = 1.0 / cos(x); end
+
+function [OSGBlat,OSGBlon] = to_OSGB36(easting, northing)
   % [OSGBlat,OSGBlon] = to_OSGB36(easting, northing)
   % OSGB36 Easting/Northing >> OSGB36 Latitude and Longitude
   % SA, Ox, 2018
@@ -25,7 +35,7 @@ end
     lambda0  = deg_to_rad(-2.0);
     a        = 6377563.396;
     b        = 6356256.909;
-    eSquared = (( a *  a) - ( b *  b)) / ( a *  a);
+    eSquared = (( a^2) - ( b^2)) / ( a^2);
     
     %phi      = 0; godbless Matlab!
     %lambda   = 0; godbless Matlab!
@@ -41,13 +51,12 @@ end
         M   = ( b *  OSGB_F0)...
             * (((1 +  n + ((5.0 / 4.0) *  n *  n) + ((5.0 / 4.0) *  n *  n *  n))...
             * ( phiPrime -  phi0))...
-            - (((3 *  n) + (3 *  n *  n) + ((21.0 / 8.0) *  n *  n *  n))...
-            * sin( phiPrime -  phi0)...
-            * cos( phiPrime +  phi0))...
-            + ((((15.0 / 8.0) *  n *  n) + ((15.0 / 8.0) *  n *  n *  n))...
+            - (((3 *  n) + (3 *  n^2) + ((21.0 / 8.0) *  n^3))...
+            * sin( phiPrime -  phi0) * cos( phiPrime +  phi0))...
+            + ((((15.0 / 8.0) *  n^2) + ((15.0 / 8.0) *  n^3))...
             *  sin(2.0 * ( phiPrime -  phi0))...
             *  cos(2.0 * ( phiPrime +  phi0)))...
-            - (((35.0 / 24.0) *  n *  n *  n)...
+            - (((35.0 / 24.0) *  n^3)...
             *  sin(3.0 * ( phiPrime -  phi0))...
             *  cos(3.0 * ( phiPrime +  phi0))));
 
@@ -55,13 +64,13 @@ end
 
     end 
 	     
-    v =  a *  OSGB_F0 * ((1.0 -  eSquared * sin_pow_2( phiPrime)) ^ -0.5);
-    rho = a *  OSGB_F0 * (1.0 -  eSquared)...
+    v   =  a *  OSGB_F0 * ((1 -  eSquared * sin_pow_2( phiPrime)) ^ -0.5);
+    rho = a *  OSGB_F0 * (1 -  eSquared)...
      * ((1.0 -  eSquared * sin_pow_2( phiPrime)) ^ -1.5);
 
-    etaSquared = ( v /  rho) - 1.0;
+    etaSquared = (v/rho)-1;
 
-    VII =  tan( phiPrime) / (2 *  rho *  v);
+    VII =  tan( phiPrime)/(2*rho*v);
 
     %should be checked for paranthesis
     VIII = tan(phiPrime) / (24.0 * rho * (v ^ 3.0))...
@@ -102,7 +111,7 @@ end
      + ( XII * (( E -  E0) ^ 5.0))...
      - ( XIIA * (( E -  E0) ^ 7.0));
 
-    OSGBlat  = rad_to_deg(phi);
+    OSGBlat = rad_to_deg(phi);
     OSGBlon = rad_to_deg(lambda);
 	     
 	  end
@@ -115,7 +124,7 @@ function [WGSLat, WGSLon] = to_WGS84(latitude,longitude)
 %
   a         = 6377563.396;
   b         = 6356256.909;
-  eSquared  = ((a * a) - (b * b)) / (a * a);
+  eSquared  = ((a^2) - (b^2)) / (a^2);
 
   phi       = deg_to_rad(latitude);
   lambda    = deg_to_rad(longitude);
@@ -140,11 +149,11 @@ function [WGSLat, WGSLon] = to_WGS84(latitude,longitude)
 
   a        = 6378137.000;
   b        = 6356752.3141;
-  eSquared = ((a * a) - (b * b)) / (a * a);
+  eSquared = ((a^2) - (b^2)) / (a^2);
 
   lambdaB = rad_to_deg( atan(yB / xB));
-  p = sqrt((xB * xB) + (yB * yB));
-  phiN = atan(zB / (p * (1 - eSquared)));
+  p       = sqrt((xB^2)+(yB^2));
+  phiN    = atan(zB/(p*(1-eSquared)));
 
   for i = 1:10
     v = a / (sqrt(1 - eSquared * sin_pow_2(phiN)));
@@ -158,30 +167,4 @@ function [WGSLat, WGSLon] = to_WGS84(latitude,longitude)
          
 end
 
-     
-% hmmm, just in case:
-  function RAD = deg_to_rad(degrees)
-    RAD = degrees / 180.0 * pi;
-  end
-
-  function DGR = rad_to_deg(r)
-    DGR = (r/pi)*180;
-  end
-
-  function S = sin_pow_2(x)
-    S = sin(x) * sin(x);
-  end
-
-  function C = cos_pow_2(x)
-    C = cos(x) * cos(x);
-  end
-
-  function T = tan_pow_2(x)
-    T = tan(x) * tan(x);
-  end
-%
-% Matlab has a Secant function!
-%       function SC = sec(x)
-%         SC = 1.0 / cos(x);
-%       end
       

@@ -7,7 +7,6 @@ function D = myGSP_HaversineDist(dlon1,dlon2,dlat1,dlat2)
 % Soroosh Afyouni, University of Oxford, 2018
 % srafyouni@gmail.com 
 
-% The math module contains a function named radians which converts from degrees to radians.
 rlon1 = deg2rad(dlon1); rlon2 = deg2rad(dlon2);
 rlat1 = deg2rad(dlat1); rlat2 = deg2rad(dlat2);
  
@@ -16,7 +15,8 @@ dlon = rlon2 - rlon1;
 dlat = rlat2 - rlat1; 
 a = sin(dlat./2).^2 + cos(rlat1) .* cos(rlat2) .* sin(dlon./2).^2;
 c = 2 .* asin(sqrt(a)); 
-r = 6371; % Radius of earth in kilometers. Use 3956 for miles
-%Display the result
+r = 6371; % Radius of earth in kilometers.
+
+%Tadaaa
 D = c.*r; 
 end

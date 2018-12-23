@@ -1,4 +1,4 @@
-function DD = myGSP_DgrMinSec2DecDgr(DgrMinSecLat)
+function DD = myGSP_DgrMinSec2DecDgr(DgrMinSec)
 %
 % DecDgr = myGSP_DgrMinSec2DecDgr(DgrMinSec)
 % Convets Degree Minutes Seconds to Decimal Degrees
@@ -19,4 +19,4 @@ function DD = myGSP_DgrMinSec2DecDgr(DgrMinSecLat)
 % Soroosh Afyouni, University of Oxford, 2018
 % srafyouni@gmail.com 
 
-DD = DgrMinSecLat(:,1) + DgrMinSecLat(:,2)/60 + DgrMinSecLat(:,3)./3600;
+DD = DgrMinSec(:,1) + DgrMinSec(:,2)/60 + DgrMinSec(:,3)./3600;
