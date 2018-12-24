@@ -5,6 +5,15 @@ function [WGSLat, WGSLon] = OSGB36toWGS84(easting,northing)
 % inspired by: https://github.com/LambethCouncil/OSGB36_Converter
 % tested by: http://www.bgs.ac.uk/data/webservices/convertForm.cfm#bngToLatLng
 %
+%%%REFERENCE:
+% Ordnance Survey Great Britain 
+% GEODESY & POSITIONING
+% A Guide to Coordinate Systems in Great Britain
+% An introduction to mapping coordinate systems 
+% and the use of GNSS datasets with Ordnance 
+% Survey mapping (Annex C)
+%
+%
 % Soroosh Afyouni, University of Oxford, 2018
 % srafyouni@gmail.com 
 %
