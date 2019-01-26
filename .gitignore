@@ -1,1 +1,8 @@
 *.m~
+*.tsv
+*.csv
+*.txt
+*.mat
+*.text
+*.key
+*.ukbkey
