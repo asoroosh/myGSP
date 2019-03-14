@@ -34,13 +34,10 @@ else
 end
 X = reshape(X,[N,T]);
 
-%% Initialise
-Smpl = 1;
-
 %% Do the job!
+Grad = zeros(N);
 if sum(strcmpi(varargin,'correlation'))
     %disp(['In corr land'])
-    Grad = zeros(N);
     for i = 1:N
         for j=1:N
             if W(i,j) && i<j
@@ -52,15 +49,16 @@ if sum(strcmpi(varargin,'correlation'))
 else 
     for i = 1:N
         for j=1:N
-            for t = 1:Smpl:T
-                Grad(i,j,t) = W(i,j).*(X(j,t)-X(i,t)).^2; 
+            if W(i,j) && i<j
+            	Grad(i,j) = W(i,j).*(X(j)-X(i)).^2; 
             end
         end 
-    end    
+    end
+    Grad = Grad + Grad';
 end
 
 %TV  = sum(sum(triu(Grad,1)))./2; only for undirected nets
-Grad = mean(Grad,3);
+%Grad = mean(Grad,3);
 
 TV  = sum(sum(Grad))./2;
 

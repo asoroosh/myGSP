@@ -16,6 +16,7 @@ A(1:N+1:end) = 0;
 D = sum(A,2);
 
 if sum(strcmpi(varargin,'normalise'))
+    disp('myGSP_LapMat:: Normalised laplacian')
     idx = D>0;
     LM = - A;
     LM(idx,:) = bsxfun(@times, LM(idx,:), 1./sqrt(D(idx)));
@@ -23,6 +24,7 @@ if sum(strcmpi(varargin,'normalise'))
     LM(1:N+1:end) = 1;
     L.LMType = 'normalised'; 
 else
+    disp('myGSP_LapMat:: Non-normalised laplacian')
     LM  = diag(D)-A; 
     L.LMType = 'non-normalised'; 
 end
