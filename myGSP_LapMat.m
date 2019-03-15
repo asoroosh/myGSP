@@ -1,4 +1,4 @@
-function L = myGSP_LapMat(A,varargin)
+function [L,UV] = myGSP_LapMat(A,varargin)
 % L = myGSP_LapMat(A,varargin)
 % normalised and non-normalised Laplacian graphs
 %
@@ -29,8 +29,9 @@ else
     L.LMType = 'non-normalised'; 
 end
 
+disp('Eigen decomposition...')
 % gsp_compute_fourier_basis.m
-[V0,U0] = svd((LM+LM')/2);
+[V0,~,U0] = svd((LM+LM')/2);
 
 % disp('--')
 % size(V0)
@@ -52,10 +53,17 @@ signs = sign(V0(1,:));
 signs(signs==0) = 1;
 V0 = V0*diag(signs);
 
-L.W = A;
+if sum(strcmpi(varargin,'sparse'))
+	L.W = sparse(triu(A));
+	L.L = sparse(LM); %Laplacian Matrix
+else
+	L.W = A;
+        L.L = LM; %Laplacian Matrix
+end
 L.N = N;
-L.L = LM; %Laplacian Matrix
-L.U = U0; %eigenvalues **THIS SHOULD BE COLUMN!**
-L.V = V0; %eigenvectors 
+
+UV.U = U0; %eigenvalues **THIS SHOULD BE COLUMN!**
+UV.V = V0; %eigenvectors 
+UV.N = N;
 
 end
