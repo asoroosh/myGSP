@@ -29,14 +29,18 @@ else
     L.LMType = 'non-normalised'; 
 end
 
-disp('Eigen decomposition...')
-% gsp_compute_fourier_basis.m
-[V0,~,U0] = svd((LM+LM')/2);
+disp('myGSP_LapMat:: Eigen decomposition...')
 
-% disp('--')
-% size(V0)
-% size(U0)
-% disp('--')
+
+% If X is a NxN real symmetric matrix with non-negative eigenvalues, 
+%then eigenvalues and singular values coincide, but it is not generally the case!
+%
+% gsp_compute_fourier_basis.m
+[V0,U0,~] = svd((LM+LM')/2); 
+
+% In octave, you can either do [V0,U0,X0] or [S0]! So we have to have three
+% outputs. But, for a symmetric matrix, I assume V0 is the eigenvectors and
+% U0 is the eigenvalues.
 
 % V0: eigenvectors 
 % U0: eigenvalues
@@ -54,6 +58,7 @@ signs(signs==0) = 1;
 V0 = V0*diag(signs);
 
 if sum(strcmpi(varargin,'sparse'))
+    disp('myGSP_LapMat:: The results will be in sparse matrices.')
 	L.W = sparse(triu(A));
 	L.L = sparse(LM); %Laplacian Matrix
 else
