@@ -36,7 +36,9 @@ disp('myGSP_LapMat:: Eigen decomposition...')
 %then eigenvalues and singular values coincide, but it is not generally the case!
 %
 % gsp_compute_fourier_basis.m
-[V0,U0,~] = svd((LM+LM')/2); 
+% [V0,U0,~] = svd((LM+LM')/2); 
+
+[V0,U0] = gsp_full_eigen(LM);
 
 % In octave, you can either do [V0,U0,X0] or [S0]! So we have to have three
 % outputs. But, for a symmetric matrix, I assume V0 is the eigenvectors and
@@ -45,9 +47,9 @@ disp('myGSP_LapMat:: Eigen decomposition...')
 % V0: eigenvectors 
 % U0: eigenvalues
 
-U0 = diag(U0);
-[U0,idx] = sort(U0,'ascend');
-V0 = V0(:,idx);
+% U0 = diag(U0);
+% [U0,idx] = sort(U0,'ascend');
+% V0 = V0(:,idx);
 
 % disp('--')
 % size(idx)
@@ -71,4 +73,23 @@ UV.U = U0; %eigenvalues **THIS SHOULD BE COLUMN!**
 UV.V = V0; %eigenvectors 
 UV.N = N;
 
+end
+
+function [U,E] = gsp_full_eigen(L)
+%GSP_FULL_EIGEN Compute and order the eigen decomposition of L
+
+    % Compute and all eigenvalues and eigenvectors 
+%     try
+%         [eigenvectors,eigenvalues]=eig(full(L+L')/2);
+%     catch
+        [eigenvectors,eigenvalues,~]=svd(full(L+L')/2);
+%     end
+    % Sort eigenvectors and eigenvalues
+    [E,inds] = sort(diag(eigenvalues),'ascend');
+    eigenvectors=eigenvectors(:,inds);
+    
+    % Set first component of each eigenvector to be nonnegative
+    signs=sign(eigenvectors(1,:));
+    signs(signs==0)=1;
+    U = eigenvectors*diag(signs);
 end

@@ -1,4 +1,4 @@
-function Xhat = myGSP_GFT(L,X,varargin)
+function Xhat = myGSP_GFT(UV,X)
 % Xhat = myGSP_GFT(A,X)
 % 
 %%INPUT:
@@ -17,23 +17,18 @@ function Xhat = myGSP_GFT(L,X,varargin)
 % gsp_gft.m
 
 %% Read the time series
-if size(X,1) == L.N
+if size(X,1) == UV.N
     T = size(X,2);
-elseif size(X,2) == L.N
+elseif size(X,2) == UV.N
     T = size(X,1); 
 else
     error('length of the graph signal is wrong!')
 end
-X = reshape(X,[L.N,T]);
+X = reshape(X,[UV.N,T]);
 
 %% Do the job!
-if sum(strcmpi(varargin,'piecewise'))
-    for i = 1:T
-        Xhat(:,i) = L.V'*X(:,i); %GFT
-    end
-else
-    Xhat = L.V'*X; % inverse GFT: Eq 3; \hat{x}=V^{H}x % GFT
-end
+
+Xhat = UV.V'*X; % inverse GFT: Eq 3; \hat{x}=V^{H}x % GFT
 
 %follow notations in Graph Frequency Analysis of Brain Signals, 
 % Huang et al, 2016

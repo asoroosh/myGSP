@@ -1,5 +1,5 @@
 
-function [TV] = myGSP_Smoothness(L,X)
+function [TV,LapDiffOp] = myGSP_Smoothness(L,X)
 % [Xhat,V0,U0,L,ZC] = myGSP_Smoothness(L,X)
 % 
 %%INPUT:
@@ -33,7 +33,8 @@ X = reshape(X,[L.N,T]);
 
 %% Do the job!
 for i = 1:T
-    TV(i) =X(:,i)'*L.L*X(:,i); %GFT
+    LapDiffOp(:,i) = L.L*X(:,i);
+    TV(i) =X(:,i)'*LapDiffOp; %GFT
 end
 
 end

@@ -1,4 +1,4 @@
-function X = myGSP_IGFT(L,Xhat,varargin)
+function X = myGSP_IGFT(L,Xhat)
 %X = myGSP_IGFT(L,Xhat,varargin)
 %
 %%INPUT:
@@ -24,13 +24,8 @@ end
 Xhat = reshape(Xhat,[L.N,T]);
 
 %% Do the job
-if sum(strcmpi(varargin,'piecewise'))
-    for i = 1:T
-        X(:,i) = L.V*Xhat(:,i); %GFT
-    end
-else
-    X = L.V*Xhat; % inverse GFT: Eq 4; x=V\hat{x} % inverse GFT
-end
+
+X = L.V*Xhat; % inverse GFT: Eq 4; x=V\hat{x} % inverse GFT
 
 % follow notations in Graph Frequency Analysis of Brain Signals, 
 % Huang et al, 2016
