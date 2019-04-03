@@ -10,6 +10,9 @@ function [L,UV] = myGSP_LapMat(A,varargin)
 %
 % SA, Uni of Oxford, 2018
 %
+
+A = full(A); 
+
 N = size(A,1);
 
 A(1:N+1:end) = 0;
@@ -65,7 +68,7 @@ if sum(strcmpi(varargin,'sparse'))
 	L.L = sparse(LM); %Laplacian Matrix
 else
 	L.W = A;
-        L.L = LM; %Laplacian Matrix
+    L.L = LM; %Laplacian Matrix
 end
 L.N = N;
 
