@@ -8,6 +8,8 @@ function [mVG,VG,Grad,TV] = myGSP_VertexGrad(L,X,varargin)
 %%OUTPUT:
 % VG: Vertex gradients
 %
+%%REFERENCES:
+% Ortega 2018, Shuman 2013
 %
 % Soroosh Afyouni, University of Oxford, 2018
 % srafyouni@gmail.com
@@ -41,7 +43,11 @@ if sum(strcmpi(varargin,'correlation'))
     for i = 1:N
         for j=1:N
             if W(i,j) && i<j
-                Grad(i,j) = W(i,j).*2.*(1-corr(X(i,:)',X(j,:)')); 
+                % Grad(i,j) = W(i,j).*2.*(1-corr(X(i,:)',X(j,:)')); 
+                % The line above was the original; but where this 2 comes
+                % from?! And also, what is gonna happen to the negative
+                % correlations? So added a .^2 just in case.
+                Grad(i,j) = W(i,j)*(1-corr(X(i,:)',X(j,:)').^2); 
             end
         end 
     end
@@ -50,15 +56,13 @@ else
     for i = 1:N
         for j=1:N
             if W(i,j) && i<j
-            	Grad(i,j) = W(i,j).*(X(j)-X(i)).^2; 
+            	Grad(i,j) = W(i,j).*mean((X(j,:)-X(i,:)).^2); 
             end
         end 
     end
     Grad = Grad + Grad';
 end
 
-%TV  = sum(sum(triu(Grad,1)))./2; only for undirected nets
-%Grad = mean(Grad,3);
 
 TV  = sum(sum(Grad))./2;
 
