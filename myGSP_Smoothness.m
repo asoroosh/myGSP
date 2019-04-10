@@ -32,9 +32,12 @@ end
 X = reshape(X,[L.N,T]);
 
 %% Do the job!
-for i = 1:T
-    LapDiffOp(:,i) = L.L*X(:,i);
-    TV(i) =X(:,i)'*LapDiffOp; %GFT
-end
+% for i = 1:T
+%     LapDiffOp(:,i) = L.L*X(:,i);
+%     TV(i) =X(:,i)'*LapDiffOp; %GFT
+% end
+
+LapDiffOp = L.L*X;
+TV =trace(X'*LapDiffOp); %GFT
 
 end
