@@ -16,16 +16,37 @@ A = full(A);
 N = size(A,1);
 
 A(1:N+1:end) = 0;
+
+%weighted degrees: See Shuman et al 2013; p85
 D = sum(A,2);
 
 if sum(strcmpi(varargin,'normalise'))
     disp('myGSP_LapMat:: Normalised laplacian')
+    
     idx = D>0;
-    LM = - A;
-    LM(idx,:) = bsxfun(@times, LM(idx,:), 1./sqrt(D(idx)));
-    LM(:,idx) = bsxfun(@times, LM(:,idx), 1./sqrt(D(idx))');
+    LM = -A;
+    LM(idx,:) = bsxfun(@times, LM(idx,:), 1./sqrt(D(idx)));  %diag(D).^(-.5))*LM
+    LM(:,idx) = bsxfun(@times, LM(:,idx), 1./sqrt(D(idx))'); %(diag(D).^(-.5))*LM*(diag(D).^(-.5))
     LM(1:N+1:end) = 1;
-    L.LMType = 'normalised'; 
+    
+%     nL = (diag(D).^(-.5))*LM*(diag(D).^(-.5));
+%     nL = zeros(N);
+%     for i = 1:N
+%         for j = 1:N
+%             if A(i,j)
+%                 nL(i,j) = -(A(i,j)./sqrt((D(i).*D(j)))); 
+%             else
+%                 nL(i,j) = 0;
+%             end
+%         end
+%     end
+%     nL(1:N+1:end) = 1;
+    
+    L.LMType = 'normalised';
+    
+elseif sum(strcmpi(varargin,'randomwalk'))
+    LM = speye(n) - diag(d.^(-1))*W;
+    L.LMType = 'randomwalk'; 
 else
     disp('myGSP_LapMat:: Non-normalised laplacian')
     LM  = diag(D)-A; 
